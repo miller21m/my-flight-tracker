@@ -15,6 +15,11 @@
 import Arrival from './Arrival'
 import Departure from './Departure'
 export default {
+    data(){
+        return{
+            
+        }
+    },
     components:{
         appArrival: Arrival,
         appDeparture: Departure

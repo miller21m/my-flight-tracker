@@ -12,7 +12,8 @@ export default new Vuex.Store({
         map: undefined,//The main map for the main screen
         imageSrc: '<img src="./public/airplane.png">',
         optionForPlaces: undefined,
-        searchedLocation: null
+        searchedLocation: null,
+        iataCode: null
 
     },
     mutations:{
@@ -27,6 +28,10 @@ export default new Vuex.Store({
         },
         storeSearchedLocation(state, data){
           state.searchedLocation = data
+        },
+        storeIataCode(state, data){
+          state.iataCode = data;
+          //console.log(data);
         }
 
     },
@@ -156,6 +161,41 @@ export default new Vuex.Store({
             .catch((error)=>{
               console.log(error);
             })
+          },
+
+          //--------Getting the Iata code of the airport----------//
+          storeAirPortCode({commit}, location){
+                        //GETTING THE CODE OF THE SELECTED AIR-PORT --> in the client filder airportsCode
+                        axios.get('/airportsCode',{
+                          params:{
+                              lat:location.geometry.coordinates[1],
+                              lng:location.geometry.coordinates[0]
+                          }
+                      })
+                      .then((res)=>{
+                          //console.log(res.data.airports.response[0].code);//The code of the selected airport
+                          commit('storeIataCode', res.data.airports.response[0].code)
+                      })
+                      .catch((error)=>{
+                          console.log(error);
+                      })
+          },
+          //----------------------------------------------------------//
+
+          getDepFlights(){
+            //console.log(code);
+            axios.get('/depart', {
+              params:{
+                iataCode:'TLV'
+              }
+            })
+            .then((res)=>{
+              console.log(res);
+            })
+            .catch((error)=>{
+              console.log('Im the error');
+              console.log(error);
+            })
           }
 
     },
@@ -168,6 +208,9 @@ export default new Vuex.Store({
         },
         getSearchedLocation(state){
           return state.searchedLocation
+        },
+        getIataCode(state){
+          return state.iataCode
         }
 
     }

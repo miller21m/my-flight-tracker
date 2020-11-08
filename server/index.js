@@ -1,7 +1,7 @@
 const express = require('express')
 const getcode = require('./src/utils/geocode')
 const airportsCode = require('./src/utils/airportsCode')
-const flight = require('./src/utils/flights')
+const flight = require('./src/utils/flights.js')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -52,6 +52,19 @@ app.get('/airportsCode', (req,res)=>{
 
         res.send({
             airports
+        })
+    })
+})
+
+app.get('/depart', (req,res)=>{
+    console.log('check: '+req.query.iataCode);
+    flight.departure(req.query.iataCode, (error, {allDepartureFlights}={})=>{
+        if(error){
+            return res.send({error})
+        }
+        // console.log(allDepartureFlights);
+        res.send({
+            allDepartureFlights
         })
     })
 })
