@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        Depa
+        Departure
     </div>
 </template>
 
@@ -13,6 +13,6 @@ export default {
 
 <style scoped>
 .container{
-    border: 5px solid red;
+    left: 50%;
 }
 </style>

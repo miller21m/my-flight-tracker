@@ -27,22 +27,27 @@ export default {
 <style scoped>
 .container {
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
+    flex-wrap: wrap;
+    align-items: center;
   z-index: 100;
   /* bottom: 33.33%; */
   width: 33.33%;
   /* right: 2px; */
-  border: 1px solid red;
 }
 
 .appArrival{
     display: inline-block;
-    width: 50%;
+    width: 48%;
+    background: rgba(255, 255, 255, 0.7);
+    margin: 4px;
 }
 
 
 .appDeparture{
     display: inline-block;
-    width: 50%;
+    width: 48%;
+    background: rgba(255, 255, 255, 0.7);
+    
 }
 </style>

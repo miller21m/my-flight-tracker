@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        Arriv
+        Arrival
     </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
 
 <style scoped>
 .container{
-    border: 5px solid blue;
+    display: flex;
+    left: 50%;
 }
 </style>
