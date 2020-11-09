@@ -24,7 +24,6 @@ export default {
             //console.log(this.location.geometry.coordinates);//lat --[1]  lon ---[0]
 
             this.$store.dispatch('storeAirPortCode', this.location)
-            this.$store.dispatch('getDepFlights')
         }
     }
     

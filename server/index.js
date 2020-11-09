@@ -63,9 +63,7 @@ app.get('/depart', (req,res)=>{
             return res.send({error})
         }
         // console.log(allDepartureFlights);
-        res.send({
-            allDepartureFlights
-        })
+        res.send({allDepartureFlights})
     })
 })
 

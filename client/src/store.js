@@ -174,29 +174,29 @@ export default new Vuex.Store({
                       })
                       .then((res)=>{
                           //console.log(res.data.airports.response[0].code);//The code of the selected airport
-                          commit('storeIataCode', res.data.airports.response[0].code)
+                          let code = res.data.airports.response[0].code;
+                          commit('storeIataCode', code);
+
+                          //get all the departure flights 
+                          axios.get('/depart', {
+                            params:{
+                              iataCode: code
+                            }
+                          })
+                          .then((res)=>{
+                            console.log(res);
+                          })
+                          .catch((error)=>{
+                            console.log('Im the error');
+                            console.log(error);
+                          })
+                          
                       })
                       .catch((error)=>{
                           console.log(error);
                       })
-          },
-          //----------------------------------------------------------//
-
-          getDepFlights(){
-            //console.log(code);
-            axios.get('/depart', {
-              params:{
-                iataCode:'TLV'
-              }
-            })
-            .then((res)=>{
-              console.log(res);
-            })
-            .catch((error)=>{
-              console.log('Im the error');
-              console.log(error);
-            })
           }
+          //----------------------------------------------------------//
 
     },
     getters:{
