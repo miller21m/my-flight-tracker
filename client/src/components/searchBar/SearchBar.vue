@@ -44,5 +44,6 @@ export default {
     height:4vh;
     -moz-border-radius: 35px;
     border-radius: 35px;    
+    padding-left: 10px;
 }
 </style>

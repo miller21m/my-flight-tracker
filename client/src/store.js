@@ -13,7 +13,9 @@ export default new Vuex.Store({
         imageSrc: '<img src="./public/airplane.png">',
         optionForPlaces: undefined,
         searchedLocation: null,
-        iataCode: null
+        iataCode: null,
+        allDepFlights: null,
+        allArrivFlights: null
 
     },
     mutations:{
@@ -32,6 +34,12 @@ export default new Vuex.Store({
         storeIataCode(state, data){
           state.iataCode = data;
           //console.log(data);
+        },
+        storeDep(state,data){
+          state.allDepFlights = data;
+        },
+        storeArrivel(state, data){
+          state.allArrivFlights = data
         }
 
     },
@@ -49,40 +57,39 @@ export default new Vuex.Store({
                   container: 'map',
                   style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
                   center: [res.coords.longitude ,res.coords.latitude], // starting position [lng, lat]
-                  zoom: 9// starting zoom
+                  zoom: 4// starting zoom
                 })
 
-                new window.mapboxgl.Marker({color:'red'})
+                new window.mapboxgl.Marker({color: 'red'  })
                 .setLngLat([res.coords.longitude, res.coords.latitude])
                 .addTo(map)
 
 
-                // //Featch all the live flights in real-time
-                // axios.get('/activeFlights')
-                // .then((res)=>{
-                //   //console.log(res.data.allflights.data);
-                //   const flights = res.data.allflights.data
-                //   const liveFlights =[]
+                //Featch all the live flights in real-time
+                axios.get('/activeFlights')
+                .then((res)=>{
+                  //console.log(res.data.allflights.data);
+                  const flights = res.data.allflights.data
+                  const liveFlights =[]
 
-                //   //Save only the live flights with live != null
-                //   flights.forEach(flight => {
-                //   if(flight.live != null){
-                //     liveFlights.push(flight)
-                //   }
-                //   });
+                  //Save only the live flights with live != null
+                  flights.forEach(flight => {
+                  if(flight.live != null){
+                    liveFlights.push(flight)
+                  }
+                  });
 
-                //   liveFlights.forEach(flight =>{
-                    
-                //     new window.mapboxgl.Marker({color:'blue'})
-                //     .setLngLat([flight.live.longitude , flight.live.latitude])
-                //     .addTo(map)
-                //   })
+                  liveFlights.forEach(flight =>{
+                    new window.mapboxgl.Marker({color:'blue'})
+                    .setLngLat([flight.live.longitude , flight.live.latitude])
+                    .addTo(map)
+                  })
 
-                //   console.log(liveFlights);
-                // })
-                // .catch((error)=>{
-                //   console.log(error);
-                // })
+                  console.log(liveFlights);
+                })
+                .catch((error)=>{
+                  console.log(error);
+                })
             
                 
 
@@ -164,7 +171,7 @@ export default new Vuex.Store({
           },
 
           //--------Getting the Iata code of the airport----------//
-          storeAirPortCode({commit}, location){
+          async storeAirPortCode({commit}, location){
                         //GETTING THE CODE OF THE SELECTED AIR-PORT --> in the client filder airportsCode
                         axios.get('/airportsCode',{
                           params:{
@@ -175,22 +182,36 @@ export default new Vuex.Store({
                       .then((res)=>{
                           //console.log(res.data.airports.response[0].code);//The code of the selected airport
                           let code = res.data.airports.response[0].code;
-                          commit('storeIataCode', code);
+                           commit('storeIataCode', code);
 
-                          //get all the departure flights 
+                          // get all the departure flights 
                           axios.get('/depart', {
                             params:{
                               iataCode: code
                             }
                           })
                           .then((res)=>{
-                            console.log(res);
+                            //console.log(res.data.data);
+                             commit('storeDep', res.data.data)
                           })
                           .catch((error)=>{
-                            console.log('Im the error');
                             console.log(error);
                           })
-                          
+                          //----End get all departure flights---//
+
+                          axios.get('/arrival', {
+                            params:{
+                              iataCode:code
+                            }
+                          })
+                          .then((res)=>{
+                            //console.log(res.data.data);
+                            commit('storeArrivel', res.data.data)
+                          })
+                          .catch((error)=>{
+                            console.log(error);
+                          })
+
                       })
                       .catch((error)=>{
                           console.log(error);
@@ -211,6 +232,12 @@ export default new Vuex.Store({
         },
         getIataCode(state){
           return state.iataCode
+        },
+        getStoreDep(state){
+          return state.allDepFlights
+        },
+        getStoreArrivel(state){
+          return state.allArrivFlights
         }
 
     }

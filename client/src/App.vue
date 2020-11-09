@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <app-map></app-map>
+      <app-map ></app-map>
       <search-bar></search-bar>
       <dep-and-arr></dep-and-arr>
   </div>

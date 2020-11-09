@@ -7,15 +7,15 @@ const app = express()
 const port = process.env.PORT || 3000
 
 
-// app.get('/activeFlights', (req,res)=>{
-//     flight((error,{allflights}={})=>{
-//         if(error){
-//             return res.send({error})
-//         }
+app.get('/activeFlights', (req,res)=>{
+    flight.flight((error,{allflights}={})=>{
+        if(error){
+            return res.send({error})
+        }
 
-//         res.send({allflights})
-//     })
-// })
+        res.send({allflights})
+    })
+})
 
 
 app.get('/location', (req,res)=>{
@@ -63,7 +63,16 @@ app.get('/depart', (req,res)=>{
             return res.send({error})
         }
         // console.log(allDepartureFlights);
-        res.send({allDepartureFlights})
+        res.send(allDepartureFlights)
+    })
+})
+
+app.get('/arrival', (req, res)=>{
+    flight.arrival(req.query.iataCode, (error, {allArrivalFlights}={})=>{
+        if(error){
+            return res.send({error})
+        }
+        res.send(allArrivalFlights)
     })
 })
 
