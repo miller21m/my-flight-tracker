@@ -3,6 +3,7 @@
     <div>
           <h4 class="title">Departure</h4>
     </div>
+    
     <div class="container">
         <dep-item v-for="dep in this.$store.getters.getStoreDep" :key="dep.length" :depItem="dep"></dep-item>
     </div>
@@ -30,7 +31,6 @@ export default {
     height: 200px;
     overflow-y: scroll;
     overflow-x:hidden;
-    /* border: 1px solid black; */
 }
 
 

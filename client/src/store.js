@@ -10,7 +10,7 @@ export default new Vuex.Store({
     state:{
 
         map: undefined,//The main map for the main screen
-        imageSrc: '<img src="./public/airplane.png">',
+
         optionForPlaces: undefined,
         searchedLocation: null,
         iataCode: null,
@@ -22,10 +22,8 @@ export default new Vuex.Store({
 
         storeMainMap(state, data){
             state.map = data;
-            //console.log(data);
         },
         storeOptionForPlaces(state, data){
-          //console.log(data);
           state.optionForPlaces = data
         },
         storeSearchedLocation(state, data){
@@ -33,7 +31,6 @@ export default new Vuex.Store({
         },
         storeIataCode(state, data){
           state.iataCode = data;
-          //console.log(data);
         },
         storeDep(state,data){
           state.allDepFlights = data;
@@ -45,7 +42,7 @@ export default new Vuex.Store({
     },
     actions:{
 
-      //------------------Loading the map when the user is loading the app------------------------
+      //------------------Loading the map ------------------------
         loadMap({commit}){
               window.mapboxgl.accessToken = 'pk.eyJ1IjoibWlsbGVyMjEiLCJhIjoiY2tnZG56cWx6MGtxcjJxbzdkcHBwYXJwZiJ9.JmTuQgnwF_eqRexjWn32kw';
               
@@ -64,11 +61,19 @@ export default new Vuex.Store({
                 .setLngLat([res.coords.longitude, res.coords.latitude])
                 .addTo(map)
 
+                //Add find-my-current-location function 
+                map.addControl(
+                        new window.mapboxgl.GeolocateControl({
+                            positionOptions: {
+                            enableHighAccuracy: true
+                            },
+                            trackUserLocation: true
+                  }));
+
 
                 //Featch all the live flights in real-time
                 axios.get('/activeFlights')
                 .then((res)=>{
-                  //console.log(res.data.allflights.data);
                   const flights = res.data.allflights.data
                   const liveFlights =[]
 
@@ -79,31 +84,19 @@ export default new Vuex.Store({
                   }
                   });
 
+                
+
                   liveFlights.forEach(flight =>{
-                    new window.mapboxgl.Marker({color:'blue'})
-                    .setLngLat([flight.live.longitude , flight.live.latitude])
-                    .addTo(map)
+                      new window.mapboxgl.Marker({color:'blue'})
+                      .setLngLat([flight.live.longitude , flight.live.latitude])
+                      .addTo(map)
                   })
 
-                  console.log(liveFlights);
+                  //console.log(liveFlights);
                 })
                 .catch((error)=>{
                   console.log(error);
                 })
-            
-                
-
-
-
-
-                //Add find-my-current-location function 
-                map.addControl(
-                   new window.mapboxgl.GeolocateControl({
-                  positionOptions: {
-                  enableHighAccuracy: true
-                  },
-                  trackUserLocation: true
-                }));
         
                 //Storing the main map on the map state
                 commit('storeMainMap', map)
@@ -173,7 +166,7 @@ export default new Vuex.Store({
           //--------Getting the Iata code of the airport----------//
           async storeAirPortCode({commit}, location){
                         //GETTING THE CODE OF THE SELECTED AIR-PORT --> in the client filder airportsCode
-                        axios.get('/airportsCode',{
+                        await axios.get('/airportsCode',{
                           params:{
                               lat:location.geometry.coordinates[1],
                               lng:location.geometry.coordinates[0]
@@ -185,13 +178,12 @@ export default new Vuex.Store({
                            commit('storeIataCode', code);
 
                           // get all the departure flights 
-                          axios.get('/depart', {
+                           axios.get('/depart', {
                             params:{
                               iataCode: code
                             }
                           })
                           .then((res)=>{
-                            //console.log(res.data.data);
                              commit('storeDep', res.data.data)
                           })
                           .catch((error)=>{
@@ -205,7 +197,6 @@ export default new Vuex.Store({
                             }
                           })
                           .then((res)=>{
-                            //console.log(res.data.data);
                             commit('storeArrivel', res.data.data)
                           })
                           .catch((error)=>{
@@ -233,64 +224,12 @@ export default new Vuex.Store({
         getIataCode(state){
           return state.iataCode
         },
-        getStoreDep(state){
-          return state.allDepFlights
+         getStoreDep(state){
+          return  state.allDepFlights
         },
-        getStoreArrivel(state){
-          return state.allArrivFlights
+         getStoreArrivel(state){
+          return  state.allArrivFlights
         }
 
     }
 })
-
-
-
-
-
-// loadMap({commit}){
-//   axios.get('/location', {
-//     params:{
-//       address: 'New-york'
-//     }
-//   })
-//   .then(res =>{
-//     console.log(res.data);        
-//     window.mapboxgl.accessToken = 'pk.eyJ1IjoibWlsbGVyMjEiLCJhIjoiY2tnZG56cWx6MGtxcjJxbzdkcHBwYXJwZiJ9.JmTuQgnwF_eqRexjWn32kw';
-    
-//     const map = new window.mapboxgl.Map({
-//     container: 'map',
-//     style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-//     center: [res.data.longtitude ,res.data.latitude], // starting position [lng, lat]
-//     zoom: 9// starting zoom
-//   })
-
-//   window.navigator.geolocation.getCurrentPosition((res)=>{
-//     console.log(res.coords);
-//   })
-//   //Add find-my-current-location function 
-//   map.addControl(
-//      new window.mapboxgl.GeolocateControl({
-//     positionOptions: {
-//     enableHighAccuracy: true
-//     },
-//     trackUserLocation: true
-//   }));
-
-
-//   commit('storeMainMap', map)
-//   })
-//   .catch(error => console.log(error));
-// }
-
-
-
-
-
-// aircraft: null
-// airline: {name: "Asiana Airlines", iata: "OZ", icao: "AAR"}
-// arrival: {airport: "Almaty", timezone: "Asia/Almaty", iata: "ALA", icao: "UAAA", terminal: "2", …}
-// departure: {airport: "Seoul (Incheon)", timezone: "Asia/Seoul", iata: "ICN", icao: "RKSI", terminal: "1", …}
-// flight: {number: "6961", iata: "OZ6961", icao: "AAR6961", codeshared: {…}}
-// flight_date: "2020-11-03"
-// flight_status: "active"
-// live: null
