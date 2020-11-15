@@ -49,7 +49,6 @@ export default {
 <style scoped>
 .container {
     position:absolute;
-    /* display: inline-block; */
     flex-wrap: wrap;
     align-items: center;
     z-index: 100;

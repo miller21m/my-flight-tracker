@@ -87,12 +87,14 @@ export default new Vuex.Store({
                 
 
                   liveFlights.forEach(flight =>{
-                      new window.mapboxgl.Marker({color:'blue'})
+                      new window.mapboxgl.Marker({color:'green'})
                       .setLngLat([flight.live.longitude , flight.live.latitude])
+                      .setPopup(new window.mapboxgl.Popup({ offset: 25 }) // add popups
+                      .setHTML(
+                        '<div><h3>' + flight.airline.name+ '</h3><p> Departure: ' + flight.departure.airport+ '</p><p> Arrival: '+ flight.arrival.airport+'</p><div>')
+                        )
                       .addTo(map)
                   })
-
-                  //console.log(liveFlights);
                 })
                 .catch((error)=>{
                   console.log(error);
@@ -147,7 +149,6 @@ export default new Vuex.Store({
 
           //-------Search options for locations ------------------//
           locationOptions({commit}, term){
-            console.log(term);
             axios.get('/location',{
               params:{
                 address: term,
@@ -177,7 +178,7 @@ export default new Vuex.Store({
                           let code = res.data.airports.response[0].code;
                            commit('storeIataCode', code);
 
-                          // get all the departure flights 
+                          // -----get all the departure flights ----
                            axios.get('/depart', {
                             params:{
                               iataCode: code
@@ -191,6 +192,7 @@ export default new Vuex.Store({
                           })
                           //----End get all departure flights---//
 
+                          // -----get all the arrival flights ----
                           axios.get('/arrival', {
                             params:{
                               iataCode:code
@@ -202,7 +204,7 @@ export default new Vuex.Store({
                           .catch((error)=>{
                             console.log(error);
                           })
-
+                          //----End get all arrival flights---//
                       })
                       .catch((error)=>{
                           console.log(error);
