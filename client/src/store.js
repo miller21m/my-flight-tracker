@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import KEY from './key';
 
 
 Vue.use(Vuex);
@@ -44,7 +45,7 @@ export default new Vuex.Store({
 
       //------------------Loading the map ------------------------
         loadMap({commit}){
-              window.mapboxgl.accessToken = 'pk.eyJ1IjoibWlsbGVyMjEiLCJhIjoiY2tnZG56cWx6MGtxcjJxbzdkcHBwYXJwZiJ9.JmTuQgnwF_eqRexjWn32kw';
+              window.mapboxgl.accessToken = KEY;
               
               //Geeting the current location of the user when loding the application
               window.navigator.geolocation.getCurrentPosition((res)=>{

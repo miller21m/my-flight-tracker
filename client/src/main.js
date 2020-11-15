@@ -4,8 +4,7 @@ import axios from 'axios'
 import store from './store'
 
 Vue.config.productionTip = false
-
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://localhost:3000' || process.env.PORT
 
 new Vue({
   store,
