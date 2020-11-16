@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const app = express()
 
-
+const port = process.env.PORT || 3000
 //Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -96,7 +96,7 @@ if(process.env.NODE_ENV === 'production'){
     app.get(/.*/, (req, res)=>res.sendFile(__dirname + '/public/index.html'));
 }
 
-const port = process.env.PORT || 3000
+
 
 app.listen(port, ()=>{
     console.log('Server is up on port ' + port);
