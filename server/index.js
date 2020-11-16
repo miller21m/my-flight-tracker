@@ -3,8 +3,17 @@ const getcode = require('./src/utils/geocode')
 const airportsCode = require('./src/utils/airportsCode')
 const flight = require('./src/utils/flights.js')
 
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express()
-const port = process.env.PORT || 3000
+
+
+//Middleware
+app.use(bodyParser.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+
 
 
 app.get('/activeFlights', (req,res)=>{
@@ -76,6 +85,18 @@ app.get('/arrival', (req, res)=>{
     })
 })
 
+
+
+//Handle production
+if(process.env.NODE_ENV === 'production'){
+    //Static folder
+    app.use(express.static(__dirname + '/public/'));
+
+    //Handle SPA
+    app.get(/.*/, (req, res)=>res.sendFile(__dirname + '/public/index.html'));
+}
+
+const port = process.env.PORT || 3000
 
 app.listen(port, ()=>{
     console.log('Server is up on port ' + port);
