@@ -4,7 +4,7 @@ import App from './App.vue'
 import store from './store'
 
 // Vue.config.productionTip = false
- axios.defaults.baseURL = 'http://localhost:3000' 
+ axios.defaults.baseURL = 'https://flight-tracker-m.herokuapp.com/' 
 
 new Vue({
   store,
