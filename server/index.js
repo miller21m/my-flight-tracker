@@ -53,7 +53,7 @@ app.get('/location', (req,res)=>{
 
 
 app.get('/airportsCode', (req,res)=>{
-    console.log(req.query);
+    //console.log(req.query);
     airportsCode(req.query.lat, req.query.lng ,(error, {airports}={})=>{
         if(error){
             return res.send({error})
@@ -66,7 +66,7 @@ app.get('/airportsCode', (req,res)=>{
 })
 
 app.get('/depart', (req,res)=>{
-    console.log('check: '+req.query.iataCode);
+    //console.log('check: '+req.query.iataCode);
     flight.departure(req.query.iataCode, (error, {allDepartureFlights}={})=>{
         if(error){
             return res.send({error})

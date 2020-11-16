@@ -5,7 +5,6 @@
 </template>
 
 <script>
-//import axios from 'axios'
 export default {
   data(){
     return{
@@ -18,7 +17,6 @@ export default {
     }
 },
 mounted(){
-  //this.loadMap();
   this.loadMap()
 
   }

@@ -49,7 +49,6 @@ export default new Vuex.Store({
               
               //Geeting the current location of the user when loding the application
               window.navigator.geolocation.getCurrentPosition((res)=>{
-                console.log(res.coords);
 
                 const map = new window.mapboxgl.Map({
                   container: 'map',
@@ -118,8 +117,6 @@ export default new Vuex.Store({
               }
             })
             .then((res)=>{
-              console.log(res);
-
               //Loading the map from mapboxgl
               const map = new window.mapboxgl.Map({
                 container: 'map',
