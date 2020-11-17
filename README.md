@@ -4,7 +4,7 @@
 I decided to combine both my passion for coding and aviation into this app.</p>
 
 <p>As part of my full-stack studies, I build my personal  "flight-tracker", 
-in this app, you can track real-time/ live flights around the world and searching for airports, and watch the arrival/departure time table.</p>
+in this app, you can track real-time/ live flights around the world, searching for airports, and watch the arrival/departure time table.</p>
 
 <p>Link- https://flight-tracker-m.herokuapp.com/</p>
 
